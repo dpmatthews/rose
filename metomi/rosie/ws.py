@@ -36,7 +36,6 @@ import json
 import logging
 import os
 from pathlib import Path
-import pwd
 import signal
 import sys
 from time import sleep
@@ -315,18 +314,17 @@ class GetHandler(RosieDiscoService):
 
 class HelloHandler(RosieDiscoService):
 
-    """Writes a 'Hello' message to the current logged-in user, else 'user'."""
+    """Writes a 'Hello' message."""
 
-    HELLO = "Hello %s\n"
+    HELLO = "Hello\n"
 
     def get(self, *args):
         """Say Hello on success."""
         format_arg = self.get_query_argument("format", default=None)
-        data = self.HELLO % pwd.getpwuid(os.getuid()).pw_name
         if format_arg == "json":
-            self.write(json.dumps(data))
+            self.write(json.dumps(self.HELLO))
         else:
-            self.write(data)
+            self.write(self.HELLO)
 
 
 class SearchHandler(RosieDiscoService):
